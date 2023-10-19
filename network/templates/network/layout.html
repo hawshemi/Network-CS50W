@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Social Network{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v6.4.2/css/all.css" rel="stylesheet">
+    <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand mb-0" href="{% url 'index' %}">Social Network</a>
+        <div>
+            {% with request.resolver_match.url_name as url_name %}
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item {% if url_name == 'profile' %}active{% endif %}">
+                    <a class="nav-link username" href="{% url 'profile' user.username %}"><strong>{{ user.username }}</strong></a>
+                </li>
+                {% endif %}
+                <li class="nav-item {% if url_name == 'index' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item {% if url_name == 'following' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'following' %}">Following</a>
+                </li>
+                <li class="nav-item {% if url_name == 'logout' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                {% else %}
+                <li class="nav-item {% if url_name == 'login' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li class="nav-item {% if url_name == 'register' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% endwith %}
+        </div>
+    </nav>
+    <div class="body">
+        {% block body %}
+        {% endblock %}
+        <ul class="pagination justify-content-center">
+            {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.previous_page_number }}">
+                    Previous
+                </a>
+            </li>
+            {% endif %}
+            {%if posts.paginator.num_pages > 1 %}
+            {% for num in posts.paginator.page_range %}
+            {% if posts.number == num %}
+            <li class="page-item active">
+                <a class="page-link">{{ num }}</a>
+            </li>
+            {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.next_page_number }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="{% static 'network/library.js' %}"></script>
+</body>
+
+</html>

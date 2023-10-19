@@ -1,0 +1,44 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<h1>All Posts</h1>
+ {% include "network/post_form.html" %}
+<div id="posts">
+    {% for post in posts %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{% url 'profile' post.user.username %}">{{post.user.username}}</a></h5>
+            {%if post.user_id == user.id %}
+            <a href="#" class="card-link" id="edit_link_{{post.id}}" data-id="{{post.id}}" data-toggle="modal">Edit</a>
+            {%endif%}
+            <p class="card-text" id="post_text_{{post.id}}"> {{ post.text }}</p>
+            <form action="#" method="POST" id="frm_edit_{{post.id}}" data-id="{{post.id}}" style="display: none">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form_edit.id_post_edit_text }}
+                </div>
+                <div id="post_text_alert_{{post.id}}">
+                </div>
+                <div id="div_buttons">
+                <button type="button" data-id="{{post.id}}" id="btn_close_{{post.id}}" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            </form>
+
+            <p class="card-text"><small class="text-muted">{{post.post_date}}</small></p>
+            <p class="card-text">
+                <div data-id="{{post.id}}"
+                    class="card-link {% if post.current_like > 0 %} fas {%else%} far {% endif %} fa-heart">&nbsp<small
+                        class="text-muted">{{post.like_set.count}}</small>
+                        </div>
+            </p>
+        </div>
+    </div>
+    {% empty %}
+    <h2>No posts</h2>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

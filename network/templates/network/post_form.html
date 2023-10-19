@@ -1,0 +1,14 @@
+{% if user.is_authenticated %}
+<div class="card">
+    <div class="card-body">
+        <form action="{% url 'postmessage' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="post_text" class="h4">New Post</label>
+                {{ form.post_text }}
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Post</button>
+        </form>
+    </div>
+</div>
+{%endif%}

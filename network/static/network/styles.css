@@ -1,0 +1,56 @@
+* {
+    font-family: "Lato", sans-serif;
+}
+
+body {
+    padding-top: 2rem;
+    margin: auto;
+    text-align: center;
+    width: 50%;
+}
+
+h1, h2 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin: auto;
+    margin-bottom: 1rem;
+    width: 60%;
+}
+
+.nav-item {
+    margin-top: 3px;
+}
+
+.navbar-brand {
+    font-size: x-large;
+}
+
+.fa-heart {
+    color: red;
+    cursor: pointer;
+}
+
+.btn {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.btn:hover {
+    color: white;
+    background-color: blue;
+    border-color: white;
+}
+
+.username {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.hide {
+    display: none;
+}
